@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class TriggerItemFader : MonoBehaviour
 {
+    /// <summary>
+    /// 碰到物体变透明
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
     {
         ItemFader[] faders = other.GetComponentsInChildren<ItemFader>();
@@ -17,7 +21,10 @@ public class TriggerItemFader : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// 物体恢复正常颜色
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit2D(Collider2D other)
     {
         ItemFader[] faders = other.GetComponentsInChildren<ItemFader>();

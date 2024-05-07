@@ -11,7 +11,9 @@ public class SwitchBounds : MonoBehaviour
     {
         SwitchConfinerShape();
     }
-
+    /// <summary>
+    /// 获取场景的边界，防止场景穿帮
+    /// </summary>
     private void SwitchConfinerShape()
     {
         PolygonCollider2D confinerShape =
