@@ -5,7 +5,7 @@ public class ItemDetails
 {
     public int itemID;
 
-    public string name;
+    public string itemName;
     
     //枚举类型
     public ItemType itemType;
