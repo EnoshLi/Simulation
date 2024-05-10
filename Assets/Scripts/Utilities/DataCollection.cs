@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
+//物品详细信息
 public class ItemDetails
 {
     public int itemID;
@@ -31,6 +32,7 @@ public class ItemDetails
 }
 
 [System.Serializable]
+//玩家背包
 public struct InventoryItem
 {
     public int itemID;
