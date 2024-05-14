@@ -111,7 +111,9 @@ namespace Keraz.Inventory
                     itemAmount = currentAmount
                 };
                 playerBag.ItemList[Index] = item;
-            }
+                
+                
+            } 
         }
     }
 }
