@@ -3,12 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
+using UnityEngine.UI;
+
 
 namespace Keraz.Inventory
 {
+    
     public class InventoryUI : MonoBehaviour
     {
+        [Header("拖拽图片")]
+        public Image dragImge;
+        
         [Header("玩家背包UI")]
         
         [SerializeField]private  GameObject playerBagUI;

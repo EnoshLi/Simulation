@@ -9,7 +9,7 @@ using Image = UnityEngine.UI.Image;
 
 namespace Keraz.Inventory
 {
-    public class SlotUI : MonoBehaviour,IPointerClickHandler
+    public class SlotUI : MonoBehaviour,IPointerClickHandler,IBeginDragHandler,IDragHandler,IEndDragHandler
     {
         [Header("组件获取")] 
         [SerializeField] private Image slotImage;
@@ -78,6 +78,29 @@ namespace Keraz.Inventory
 
             isSelected = !isSelected;
             inventoryUI.UpdateSlotHighlight(slotIndex);
+        }
+
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            if (itemAmount!=0)
+            {
+                inventoryUI.dragImge.enabled = true;
+                inventoryUI.dragImge.sprite = slotImage.sprite;
+                inventoryUI.dragImge.SetNativeSize();
+                isSelected = true;
+                inventoryUI.UpdateSlotHighlight(slotIndex);
+            }
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            inventoryUI.dragImge.transform.position = Input.mousePosition;
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            inventoryUI.dragImge.enabled = false;
+            Debug.LogWarning(eventData.pointerCurrentRaycast.gameObject);
         }
     }
 }
