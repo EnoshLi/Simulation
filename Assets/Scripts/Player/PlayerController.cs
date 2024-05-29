@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Keraz.Inventory;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [Header("基本组件")]
     private Rigidbody2D rd;
     private BoxCollider2D coll;
+    //[SerializeField]private InventoryUI inventoryUI;
 
     [Header("新输入系统")]
     private Simulation inputSystem;
@@ -34,11 +37,17 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         faceDir = inputSystem.Player.Move.ReadValue<Vector2>();
+        //inputSystem.UI.PlayerBag.started+=OpenBagUI;
     }
+
+    /*private void OpenBagUI(InputAction.CallbackContext obj)
+    {
+        inventoryUI.OpenBagUI();
+    }*/
 
     private void FixedUpdate()
     {
-        if (faceDir.x == 0 || faceDir.y == 0)
+        if (faceDir.x <=0.5f || faceDir.y <0.5f)
         {
             Move();
         }
