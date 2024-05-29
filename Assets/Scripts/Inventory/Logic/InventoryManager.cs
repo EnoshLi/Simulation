@@ -43,7 +43,7 @@ namespace Keraz.Inventory
         }
         
         /// <summary>
-        /// 玩家背包是否充足
+        /// 检查玩家背包是否有空位
         /// </summary>
         /// <returns></returns>
         private bool CheckBagCapacity()
