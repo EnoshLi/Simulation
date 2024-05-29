@@ -2,15 +2,19 @@ using System;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 namespace Keraz.Inventory
 {
-    public class SlotUI : MonoBehaviour
+    public class SlotUI : MonoBehaviour,IPointerClickHandler
     {
-        [Header("组件获取")] [SerializeField] private Image slotImage;
+        [Header("组件获取")] 
+        [SerializeField] private Image slotImage;
         [SerializeField] private TextMeshProUGUI slotAmount;
-        [SerializeField] private Image slotHightlight;
+        public Image slotHightlight;
         [SerializeField] private Button button;
         public SlotType SlotType;
         public int slotIndex;
@@ -20,6 +24,7 @@ namespace Keraz.Inventory
         //物品信息
         public ItemDetails itemDetails;
         public int itemAmount;
+        private InventoryUI inventoryUI =>GetComponentInParent<InventoryUI>();
 
         private void Start()
         {
@@ -58,6 +63,21 @@ namespace Keraz.Inventory
             slotImage.enabled = false;
             slotAmount.text = string.Empty;
             button.interactable = false;
+        }
+        /// <summary>
+        /// 装备栏(ActionBar)高亮显示
+        /// </summary>
+        /// <param name="eventData"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (itemAmount==0)
+            {
+                return;
+            }
+
+            isSelected = !isSelected;
+            inventoryUI.UpdateSlotHighlight(slotIndex);
         }
     }
 }

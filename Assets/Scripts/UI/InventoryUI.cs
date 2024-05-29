@@ -51,11 +51,7 @@ namespace Keraz.Inventory
         {
             inputSystem.UI.PlayerBag.started += OpenBagUI;
         }
-
-        private void OpenBagUI(InputAction.CallbackContext obj)
-        {
-            OpenBagUI();
-        }
+       
 
         private void OnUpdaetInventoryUI(InventoryLocation location, List<InventoryItem> list)
         {
@@ -78,12 +74,39 @@ namespace Keraz.Inventory
             }
         }
         /// <summary>
-        /// 打开或者关闭背包
+        /// 打开或者关闭背包,手柄键盘调用
+        /// </summary>
+        /// <param name="obj"></param>
+        private void OpenBagUI(InputAction.CallbackContext obj)
+        {
+            OpenBagUI();
+        }
+        /// <summary>
+        /// 打开或者关闭背包,Button调用
         /// </summary>
         public  void OpenBagUI()
         {
             bagOpened=!bagOpened;
             playerBagUI.SetActive(bagOpened);
+        }
+        /// <summary>
+        /// ActionBar高亮显示
+        /// </summary>
+        /// <param name="index"></param>
+        public void UpdateSlotHighlight(int index)
+        {
+            foreach (var slot in playerSlots)
+            {
+                if (slot.isSelected && slot.slotIndex == index)
+                {
+                    slot.slotHightlight.gameObject.SetActive(true);
+                }
+                else
+                {
+                    slot.isSelected = false;
+                    slot.slotHightlight.gameObject.SetActive(false);
+                }
+            }
         }
     }
 }

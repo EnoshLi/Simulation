@@ -37,13 +37,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         faceDir = inputSystem.Player.Move.ReadValue<Vector2>();
-        //inputSystem.UI.PlayerBag.started+=OpenBagUI;
+       
     }
-
-    /*private void OpenBagUI(InputAction.CallbackContext obj)
-    {
-        inventoryUI.OpenBagUI();
-    }*/
+    
 
     private void FixedUpdate()
     {
