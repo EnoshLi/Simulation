@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,12 @@ namespace Keraz.Inventory
 
         [Header("背包数据")] 
         public InventoryBagSO playerBag;
-        
+
+        private void Start()
+        {
+            EventHandle.CallUpdateInventoryUI(InventoryLocation.PlayerBag,playerBag.ItemList);
+        }
+
         /// <summary>
         /// 获取物品ID
         /// </summary>
@@ -40,6 +46,8 @@ namespace Keraz.Inventory
             {
                 Destroy(item.gameObject);
             }
+            //更新UI
+            EventHandle.CallUpdateInventoryUI(InventoryLocation.PlayerBag,playerBag.ItemList);
         }
         
         /// <summary>

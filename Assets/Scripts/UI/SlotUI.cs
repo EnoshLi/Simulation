@@ -4,55 +4,60 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-public class SlotUI : MonoBehaviour
+namespace Keraz.Inventory
 {
-    [Header("组件获取")] 
-    [SerializeField]private Image slotImage;
-    [SerializeField]private TextMeshProUGUI slotAmount;
-    [SerializeField] private Image slotHightlight;
-    [SerializeField]private Button button;
-    public SlotType SlotType;
-    public bool isSelected;
-    //物品信息
-    public ItemDetails itemDetails;
-    public int itemAmount;
-
-    private void Start()
+    public class SlotUI : MonoBehaviour
     {
-        isSelected = false;
-        if (itemDetails.itemID==0)
-        {
-            UpdateEmptySlot();
-        }
-    }
+        [Header("组件获取")] [SerializeField] private Image slotImage;
+        [SerializeField] private TextMeshProUGUI slotAmount;
+        [SerializeField] private Image slotHightlight;
+        [SerializeField] private Button button;
+        public SlotType SlotType;
+        public int slotIndex;
 
-    /// <summary>
-    /// 更新格子UI和信息
-    /// </summary>
-    /// <param name="item">ItemDetials</param>
-    /// <param name="amount">数量</param>
-    public void UpdateSlot(ItemDetails item,int amount)
-    {
-        itemDetails = item;
-        slotImage.sprite = item.itemIcon;
-        itemAmount = amount;
-        slotAmount.text = amount.ToString();
-        button.interactable = true;
-    }
+        public bool isSelected;
 
-    /// <summary>
-    /// 将slot更新为空
-    /// </summary>
-    public void UpdateEmptySlot()
-    {
-        if (isSelected)
+        //物品信息
+        public ItemDetails itemDetails;
+        public int itemAmount;
+
+        private void Start()
         {
             isSelected = false;
+            if (itemDetails.itemID == 0)
+            {
+                UpdateEmptySlot();
+            }
         }
 
-        slotImage.enabled = false;
-        slotAmount.text = string.Empty;
-        button.interactable = false;
+        /// <summary>
+        /// 更新格子UI和信息
+        /// </summary>
+        /// <param name="item">ItemDetials</param>
+        /// <param name="amount">数量</param>
+        public void UpdateSlot(ItemDetails item, int amount)
+        {
+            slotImage.enabled = true;
+            itemDetails = item;
+            slotImage.sprite = item.itemIcon;
+            itemAmount = amount;
+            slotAmount.text = amount.ToString();
+            button.interactable = true;
+        }
+
+        /// <summary>
+        /// 将slot更新为空
+        /// </summary>
+        public void UpdateEmptySlot()
+        {
+            if (isSelected)
+            {
+                isSelected = false;
+            }
+
+            slotImage.enabled = false;
+            slotAmount.text = string.Empty;
+            button.interactable = false;
+        }
     }
 }
