@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         faceDir = inputSystem.Player.Move.ReadValue<Vector2>();
+        //Debug.LogWarning(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0)));
        
     }
     

@@ -450,7 +450,7 @@ MonoBehaviour:
   slotAmount: {fileID: 4642160077313964906}
   slotHightlight: {fileID: 2071641956732564647}
   button: {fileID: 1345810709705913747}
-  SlotType: 0
+  slotType: 0
   slotIndex: 0
   isSelected: 0
   itemDetails:

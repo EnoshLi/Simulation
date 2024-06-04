@@ -16,7 +16,7 @@ namespace Keraz.Inventory
         [SerializeField] private TextMeshProUGUI slotAmount;
         public Image slotHightlight;
         [SerializeField] private Button button;
-        public SlotType SlotType;
+        public SlotType slotType;
         public int slotIndex;
 
         public bool isSelected;
@@ -34,6 +34,8 @@ namespace Keraz.Inventory
                 UpdateEmptySlot();
             }
         }
+
+        
 
         /// <summary>
         /// 更新格子UI和信息
@@ -65,7 +67,7 @@ namespace Keraz.Inventory
             button.interactable = false;
         }
         /// <summary>
-        /// 装备栏(ActionBar)高亮显示
+        /// 点击装备栏(ActionBar)高亮显示
         /// </summary>
         /// <param name="eventData"></param>
         /// <exception cref="NotImplementedException"></exception>
@@ -79,7 +81,10 @@ namespace Keraz.Inventory
             isSelected = !isSelected;
             inventoryUI.UpdateSlotHighlight(slotIndex);
         }
-
+        /// <summary>
+        /// 开始退拽
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnBeginDrag(PointerEventData eventData)
         {
             if (itemAmount!=0)
@@ -91,16 +96,49 @@ namespace Keraz.Inventory
                 inventoryUI.UpdateSlotHighlight(slotIndex);
             }
         }
-
+        /// <summary>
+        /// 正在拖拽
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnDrag(PointerEventData eventData)
         {
             inventoryUI.dragImge.transform.position = Input.mousePosition;
         }
 
+        /// <summary>
+        /// 拖拽结束
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnEndDrag(PointerEventData eventData)
         {
             inventoryUI.dragImge.enabled = false;
-            Debug.LogWarning(eventData.pointerCurrentRaycast.gameObject);
+            //Debug.LogWarning(eventData.pointerCurrentRaycast.gameObject.name);
+            if (eventData.pointerCurrentRaycast.gameObject != null)
+            {
+                if (eventData.pointerCurrentRaycast.gameObject.GetComponent<SlotUI>() == null)
+                    return;
+
+                var targetSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<SlotUI>();
+                int targetIndex = targetSlot.slotIndex;
+
+                //在Player自身背包范围内交换
+                if (slotType == SlotType.Bag && targetSlot.slotType == SlotType.Bag)
+                {
+                    InventoryManager.Instance.SwapItem(slotIndex, targetIndex);
+                }
+
+                //清空所有高亮显示
+                inventoryUI.UpdateSlotHighlight(-1);
+            }
+            /*else    //测试扔在地上
+            {
+                if (itemDetails.canDropped)
+                {
+                    //鼠标对应世界坐标
+                    var pos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+                    EventHandle.CallInstantItemInScence(itemDetails.itemID,pos);
+                }
+            }*/
         }
     }
 }

@@ -119,9 +119,29 @@ namespace Keraz.Inventory
                     itemAmount = currentAmount
                 };
                 playerBag.ItemList[Index] = item;
-                
-                
             } 
+        }
+        /// <summary>
+        /// 玩家背包范围物品交换
+        /// </summary>
+        /// <param name="fromIndex"></param>
+        /// <param name="targetIndex"></param>
+        public void    SwapItem(int fromIndex,int targetIndex)
+        {
+            InventoryItem currentItem = playerBag.ItemList[fromIndex];
+            InventoryItem targetItem = playerBag.ItemList[targetIndex];
+            if (targetItem.itemID!=0)
+            {
+                playerBag.ItemList[fromIndex] = targetItem;
+                playerBag.ItemList[targetIndex] = currentItem;
+            }
+            else
+            {
+                playerBag.ItemList[targetIndex] = currentItem;
+                playerBag.ItemList[fromIndex] = new InventoryItem();
+            }
+            EventHandle.CallUpdateInventoryUI(InventoryLocation.PlayerBag,playerBag.ItemList);
+            
         }
     }
 }

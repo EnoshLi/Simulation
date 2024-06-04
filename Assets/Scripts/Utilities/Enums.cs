@@ -15,7 +15,9 @@ public enum SlotType
 {
     Bag,Box,Shop
 }
-
+/// <summary>
+/// 物品所在位置枚举
+/// </summary>
 public enum InventoryLocation
 {
     PlayerBag,Box,
