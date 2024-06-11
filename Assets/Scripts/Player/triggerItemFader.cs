@@ -7,7 +7,7 @@ using UnityEngine;
 public class TriggerItemFader : MonoBehaviour
 {
     /// <summary>
-    /// 碰到物体变透明
+    /// 碰到物体变透明触发器
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D other)
@@ -22,7 +22,7 @@ public class TriggerItemFader : MonoBehaviour
         }
     }
     /// <summary>
-    /// 物体恢复正常颜色
+    /// 物体恢复正常颜色的触发器
     /// </summary>
     /// <param name="other"></param>
     private void OnTriggerExit2D(Collider2D other)
