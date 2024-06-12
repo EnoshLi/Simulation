@@ -13,7 +13,7 @@ namespace Keraz.Inventory
     {
         [Header("组件获取")] 
         [SerializeField] private Image slotImage;
-        [SerializeField] private TextMeshProUGUI slotAmount;
+        [SerializeField] public TextMeshProUGUI slotAmount;
         public Image slotHightlight;
         [SerializeField] private Button button;
         public SlotType slotType;
@@ -59,6 +59,7 @@ namespace Keraz.Inventory
     
             // 更新物品的数量
             itemAmount = amount;
+            
     
             // 将物品数量转换为字符串并显示在UI文本上
             slotAmount.text = amount.ToString();
@@ -89,6 +90,9 @@ namespace Keraz.Inventory
     
             // 清空物品数量的文本显示
             slotAmount.text = string.Empty;
+            
+            //初始化物品详情
+            itemDetails = new();
     
             // 禁用与该物品槽关联的按钮交互
             button.interactable = false;

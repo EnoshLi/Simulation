@@ -16,15 +16,51 @@
  */
 public enum ItemType
 {
-    Seed,      // 种子
-    Commodity, // 日用品
-    Furniture, // 家具
-    HoeTool,   // 锄头工具
-    ChopTool,  // 砍树工具
-    BreakTool, // 砸石头工具
-    WaterTool, // 水壶工具
-    CollectTool, // 收集工具
-    ReapableScenery //可收获的场景装饰
+    /// <summary>
+    /// 种子
+    /// </summary>
+    Seed,
+    
+    /// <summary>
+    /// 日用品
+    /// </summary>
+    Commodity, 
+    
+    /// <summary>
+    /// 家具
+    /// </summary>
+    Furniture, 
+    
+    /// <summary>
+    /// 锄头工具
+    /// </summary>
+    HoeTool, 
+    
+    /// <summary>
+    /// 砍树工具
+    /// </summary>
+    ChopTool,  
+    
+    
+    ///  <summary>
+    /// 砸石头工具
+    /// </summary>
+    BreakTool, 
+    
+    /// <summary>
+    /// 浇水工具
+    /// </summary>
+    WaterTool, 
+    
+    ///  <summary>
+    /// 收集工具
+    /// </summary>
+    CollectTool, 
+    
+    /// <summary>
+    /// 可收获的场景装饰
+    /// </summary>
+    ReapableScenery 
 }
 /**
  * 描述物品栏位类型的枚举。
@@ -37,9 +73,18 @@ public enum ItemType
  */
 public enum SlotType
 {
-    Bag, // 物品背包
-    Box, // 存储箱
-    Shop // 商店
+    /// <summary>
+    /// 物品背包
+    /// </summary>
+    Bag, 
+    /// <summary>
+    /// 存储箱
+    /// </summary>
+    Box, 
+    /// <summary>
+    /// 商店
+    /// </summary>
+    Shop 
 }
 /**
  * 库存位置枚举。
@@ -52,6 +97,12 @@ public enum SlotType
  */
 public enum InventoryLocation
 {
-    PlayerBag, // 玩家背包
-    Box        // 箱子
+    /// <summary>
+    /// 玩家背包
+    /// </summary>
+    PlayerBag, 
+    /// <summary>
+    /// 箱子
+    /// </summary>
+    Box 
 }

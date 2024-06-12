@@ -14,6 +14,8 @@ namespace Keraz.Inventory
      */
     public class InventoryUI : MonoBehaviour
     {
+        public ItemToolTip ItemToolTip; // 声明一个类型为ItemToolTip的公共变量，用于引用ItemToolTip组件实例
+        
         // 属性和字段声明
         [Header("拖拽图片")] // Unity编辑器中分类显示的标签
         public Image dragImge; // 拖放时显示的图像组件
