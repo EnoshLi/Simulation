@@ -106,3 +106,48 @@ public enum InventoryLocation
     /// </summary>
     Box 
 }
+ /// <summary>
+ /// 定义一个枚举类型 PartType，用于表示人物的动作类型
+ /// </summary>
+public enum PartType
+{
+    /// <summary>
+    /// 表示没有特定类型
+    /// </summary>
+    None,
+    /// <summary>
+    /// 表示承载或支撑部分
+    /// </summary>
+    Carry,
+    /// <summary>
+    /// 特指锄头类工具的部分
+    /// </summary>
+    Hoe,
+    /// <summary>
+    /// 表示破碎或挖掘功能的部分
+    /// </summary>
+    Break
+}
+
+/// <summary>
+/// 定义另一个枚举类型 PartName，用来标识人物的各个部分，如身体、头发、手臂等。
+/// </summary>
+public enum PartName
+{
+    /// <summary>
+    /// 表示主体部分
+    /// </summary>
+    Body,
+    /// <summary>
+    /// 表示头发或外观装饰部分
+    /// </summary>
+    Hair,
+    /// <summary>
+    /// 表示手臂或机械臂部分
+    /// </summary>
+    Arm,
+    /// <summary>
+    /// 表示工具或装备部分 
+    /// </summary>
+    Tool
+}

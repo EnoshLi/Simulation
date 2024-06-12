@@ -84,4 +84,24 @@ public struct InventoryItem
     public int itemID;     // 物品唯一ID
     public int itemAmount; // 物品数量
 }
+/// <summary>
+/// 定义一个类 AnimatorType，该类用于表示动画控制器中特定部件的类型及其相关的动画覆盖设置。
+/// </summary>
+[System.Serializable] 
+public class AnimatorType
+{
+    /// <summary>
+    /// 人物的动作类型
+    /// </summary>
+    public PartType partType;
+
+    /// <summary>
+    /// 用来标识人物身体的各个部分
+    /// </summary>
+    public PartName partName;
+
+    // animatorOverride 成员变量，用于存储对该部件基础动画的覆盖设置。
+    // 实例化该类的对象时，可以通过此字段自定义部件的动画行为，而不改变原有动画控制器的基本配置。
+    public AnimatorOverrideController animatorOverride;
+}
 

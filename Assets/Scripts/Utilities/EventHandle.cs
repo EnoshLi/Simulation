@@ -10,6 +10,9 @@ public static class EventHandle
     
     //地图上生成物品的事件
     public static event Action<int,Vector3> InstantItemInScence;
+    
+    //物品选中事件
+    public static  event Action<ItemDetails,bool> ItemSelectedEvent;
     /**
      * 触发更新库存界面的事件方法。
      *
@@ -39,6 +42,19 @@ public static class EventHandle
     {
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
         InstantItemInScence?.Invoke(itemID,position);
+    }
+    /**
+     * 触发【物品选中状态变更】事件的方法。
+     *
+     * 通知系统中关心物品选中状态变化的组件，例如更新UI反馈或执行逻辑操作。
+     *
+     * @param itemDetails 变更选中状态的物品详细信息。
+     * @param isSelected 物品当前是否被选中的布尔值。
+     */
+    public static void CallItemSelectedEvent(ItemDetails itemDetails,bool isSelected)
+    {
+        // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
+        ItemSelectedEvent?.Invoke(itemDetails,isSelected);
     }
 
 }

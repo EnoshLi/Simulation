@@ -120,6 +120,12 @@ namespace Keraz.Inventory
     
             // 通知库存UI界面更新指定索引的物品槽高亮状态
             inventoryUI.UpdateSlotHighlight(slotIndex);
+
+            if (slotType==SlotType.Bag)
+            {
+                //物品栏中被选中的物品的信息
+                EventHandle.CallItemSelectedEvent(itemDetails,isSelected);
+            }
         }
 
         /**

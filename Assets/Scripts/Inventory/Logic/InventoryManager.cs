@@ -64,7 +64,7 @@ namespace Keraz.Inventory
             var index = GetItemIndexInBag(item.itemID);
             // 添加物品到背包特定索引位置
             AddItemAtIndex(item.itemID, index, 1);
-            Debug.LogWarning(GetItemDetails(item.itemID).itemID + "Name" + GetItemDetails(item.itemID).itemName);
+            //Debug.LogWarning(GetItemDetails(item.itemID).itemID + "Name" + GetItemDetails(item.itemID).itemName);
             // 根据标志销毁物品对象
             if (toAdd)
             {

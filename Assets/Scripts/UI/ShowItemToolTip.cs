@@ -44,7 +44,7 @@ namespace Keraz.Inventory
             if (slotUI.itemDetails.itemID != 0)
             {
                 inventoryUI.ItemToolTip.gameObject.SetActive(true);
-                Debug.LogWarning(slotUI.itemAmount);
+                //Debug.LogWarning(slotUI.itemAmount);
                 
                 inventoryUI.ItemToolTip.SetUpToolTip(slotUI.itemDetails, slotUI.slotType);
                 
@@ -72,7 +72,6 @@ namespace Keraz.Inventory
         {
             // 鼠标离开时，隐藏工具提示
             inventoryUI.ItemToolTip.gameObject.SetActive(false);
-            
         }
     }
 }
