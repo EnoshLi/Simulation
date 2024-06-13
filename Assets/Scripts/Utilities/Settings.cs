@@ -5,9 +5,9 @@ using UnityEngine;
 public class Settings
 {
     //物体渐变透明的时间
-    public const float fadeIn = 1f;
+    public const float FadeIn = 1f;
     //物体渐变透明度
-    public const float targetAlpha = 0.45f;
+    public const float TargetAlpha = 0.3f;
     
     // 为了提高动画参数访问的效率，尤其是在循环或频繁调用的场景下，
     // 我们预先通过 Animator.StringToHash 方法将动画参数的名称转换为整数哈希值。
