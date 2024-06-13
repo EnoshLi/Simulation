@@ -1,4 +1,5 @@
-using UnityEngine; 
+using UnityEngine;
+
 // 命名空间声明，用于组织与库存物品管理相关的类和方法
 namespace Keraz.Inventory
 {

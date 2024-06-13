@@ -151,3 +151,26 @@ public enum PartName
     /// </summary>
     Tool
 }
+/// <summary>
+/// 季节枚举
+/// </summary>
+public enum Season
+{
+    /// <summary>
+    /// 春天
+    /// </summary>
+    Spring,
+    /// <summary>
+    /// 夏天
+    /// </summary>
+    Summer,
+    /// <summary>
+    /// 秋天
+    /// </summary>
+    Autumn,
+    /// <summary>
+    /// 冬天
+    /// </summary>
+    Winter
+}
+
