@@ -29,6 +29,12 @@ public class TimeManager : MonoBehaviour
         InitGameTime();
     }
 
+    private void Start()
+    {
+        EventHandle.CallGameDataEvent(gameHour,gameDay,gameMonth,gameYear,gameSeason);
+        EventHandle.CallGameMinuteEvent(gameMinute,gameHour);
+    }
+
     private void Update()
     {
         // 检查游戏是否处于暂停状态
@@ -73,6 +79,7 @@ public class TimeManager : MonoBehaviour
         {
             gameSecond = 0;
             IncrementMinute();
+            EventHandle.CallGameMinuteEvent(gameMinute,gameHour);
         }
 
         // 当分钟超过预设的最大值时，重置分钟，并递增小时
@@ -80,6 +87,7 @@ public class TimeManager : MonoBehaviour
         {
             gameMinute = 0;
             IncrementHour();
+            EventHandle.CallGameDataEvent(gameHour,gameDay,gameMonth,gameYear,gameSeason);
         }
 
         // 当小时超过预设的最大值时，重置小时，并递增天数
@@ -87,6 +95,7 @@ public class TimeManager : MonoBehaviour
         {
             gameHour = 0;
             IncrementDay();
+            
         }
 
         // 当天数超过预设的最大值时，重置天数为1，并递增月份

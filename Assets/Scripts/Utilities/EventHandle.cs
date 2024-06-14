@@ -1,18 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using UnityEngine;
 
 public static class EventHandle
 {
     //更新背包栏的事件
-    public static event Action<InventoryLocation,List<InventoryItem>> UpdateInventoryUI;
-    
+    public static event Action<InventoryLocation, List<InventoryItem>> UpdateInventoryUI;
+
     //地图上生成物品的事件
-    public static event Action<int,Vector3> InstantItemInScence;
-    
+    public static event Action<int, Vector3> InstantItemInScence;
+
     //物品选中事件
-    public static  event Action<ItemDetails,bool> ItemSelectedEvent;
+    public static event Action<ItemDetails, bool> ItemSelectedEvent;
+
+    //时间改变的事件
+    public static event Action<int, int> GameMinuteEvent;
+
+    public static event Action<int, int, int, int, Season> GameDataEvent; 
+
     /**
      * 触发更新库存界面的事件方法。
      *
@@ -26,8 +33,9 @@ public static class EventHandle
     public static void CallUpdateInventoryUI(InventoryLocation location, List<InventoryItem> itemList)
     {
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
-        UpdateInventoryUI?.Invoke(location,itemList);
+        UpdateInventoryUI?.Invoke(location, itemList);
     }
+
     /**
      * 即时在场景中生成指定物品的方法。
      *
@@ -38,11 +46,12 @@ public static class EventHandle
      * @param itemID 要生成的物品唯一标识符，用于识别具体的物品类型。
      * @param position 物品生成的三维坐标位置，决定物品在场景中的摆放位置。
      */
-    public static void CallInstantItemInScence(int itemID,Vector3 position)
+    public static void CallInstantItemInScence(int itemID, Vector3 position)
     {
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
-        InstantItemInScence?.Invoke(itemID,position);
+        InstantItemInScence?.Invoke(itemID, position);
     }
+
     /**
      * 触发【物品选中状态变更】事件的方法。
      *
@@ -51,10 +60,36 @@ public static class EventHandle
      * @param itemDetails 变更选中状态的物品详细信息。
      * @param isSelected 物品当前是否被选中的布尔值。
      */
-    public static void CallItemSelectedEvent(ItemDetails itemDetails,bool isSelected)
+    public static void CallItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
     {
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
-        ItemSelectedEvent?.Invoke(itemDetails,isSelected);
+        ItemSelectedEvent?.Invoke(itemDetails, isSelected);
     }
-
+    
+    /**
+     * 触发【时间分钟变化】事件的方法。
+     *
+     * 通知系统中关心时间变化的组件，例如更新时间反馈或执行逻辑操作。
+     *
+     * @param minute 分钟
+     * @param hour 小时。
+     */
+    public static void CallGameMinuteEvent(int minute, int hour)
+    {
+        // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
+        GameMinuteEvent?.Invoke(minute, hour);
+    }
+    /// <summary>
+    /// 调用游戏数据事件。
+    /// </summary>
+    /// <param name="hour">当前小时。</param>
+    /// <param name="day">当前天数。</param>
+    /// <param name="month">当前月份。</param>
+    /// <param name="year">当前年份。</param>
+    /// <param name="season">当前季节。</param>
+    public static void CallGameDataEvent(int hour,int day,int month,int year,Season season)
+    {
+        // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
+        GameDataEvent?.Invoke(hour,day,month,year,season);
+    }
 }

@@ -31,7 +31,7 @@ public class Settings
     #region 时间相关
     
         // 定义秒的阈值，用于判断时间间隔是否满足条件
-        public const float secondThreshold = 0.12f;
+        public const float secondThreshold = 0.00005f;
         
         // 定义秒的持续最大值，用于计时功能
         public const int secondHold = 59;
