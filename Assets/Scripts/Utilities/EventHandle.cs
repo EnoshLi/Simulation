@@ -18,7 +18,11 @@ public static class EventHandle
     //时间改变的事件
     public static event Action<int, int> GameMinuteEvent;
 
-    public static event Action<int, int, int, int, Season> GameDataEvent; 
+    //日期改变时间
+    public static event Action<int, int, int, int, Season> GameDataEvent;
+
+    //
+    public static event Action<string, Vector3> TransitionEvent;
 
     /**
      * 触发更新库存界面的事件方法。
@@ -65,7 +69,7 @@ public static class EventHandle
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
         ItemSelectedEvent?.Invoke(itemDetails, isSelected);
     }
-    
+
     /**
      * 触发【时间分钟变化】事件的方法。
      *
@@ -79,6 +83,7 @@ public static class EventHandle
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
         GameMinuteEvent?.Invoke(minute, hour);
     }
+
     /// <summary>
     /// 调用游戏数据事件。
     /// </summary>
@@ -87,9 +92,21 @@ public static class EventHandle
     /// <param name="month">当前月份。</param>
     /// <param name="year">当前年份。</param>
     /// <param name="season">当前季节。</param>
-    public static void CallGameDataEvent(int hour,int day,int month,int year,Season season)
+    public static void CallGameDataEvent(int hour, int day, int month, int year, Season season)
     {
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
-        GameDataEvent?.Invoke(hour,day,month,year,season);
+        GameDataEvent?.Invoke(hour, day, month, year, season);
+    }
+
+    /// <summary>
+    /// 调用场景过渡事件。
+    /// </summary>
+    /// <param name="sceneName">目标场景的名称。</param>
+    /// <param name="targetPosition">在目标场景中的目标位置。</param>
+    /// <remarks>
+    public static void CallTransitionEvent(string sceneName, Vector3 targetPosition)
+    {
+        // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
+        TransitionEvent?.Invoke(sceneName, targetPosition);
     }
 }

@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PersistentScene.scene
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/UI.unity
+    guid: 39e91be2bb12344439b692f5c28a22d0
+  - enabled: 1
+    path: Assets/Scenes/01.Field.unity
+    guid: 02bf0932598305845813a92f02949372
+  - enabled: 1
+    path: Assets/Scenes/PlayerHome.unity
+    guid: ff8a800b214b5f44f91da5a7e6a43a2a
   m_configObjects: {}
   m_SlimFeaturesWeixinMiniGame:
     AllocateOverhead: 1
