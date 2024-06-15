@@ -181,7 +181,6 @@ public class TimeUI : MonoBehaviour
                     }
                 );
                 break;
-            
         }
     }
 }
