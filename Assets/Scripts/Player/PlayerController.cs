@@ -1,4 +1,5 @@
-using UnityEngine; 
+using Unity.VisualScripting;
+using UnityEngine;
 
 /**
  * PlayerController脚本控制玩家角色的基本移动行为。
@@ -10,28 +11,28 @@ public class PlayerController : MonoBehaviour
     /**
      * 基本参数设置，用于控制玩家移动速度。
      */
-    [Header("基本参数")]
-    public float normalSpeed; // 正常行走速度
-    public float runSpeed;   // 奔跑速度
-    public float speed;      // 当前移动速度（正常或奔跑）
-    public Vector2 faceDir;  // 玩家面向方向
-    private Animator[] _animators;// 动画组件
+    [Header("基本参数")] public float normalSpeed; // 正常行走速度
+
+    public float runSpeed; // 奔跑速度
+    public float speed; // 当前移动速度（正常或奔跑）
+    public Vector2 faceDir; // 玩家面向方向
+    private Animator[] _animators; // 动画组件
     public bool isMove; //移动判断
+    private bool inputDisable;
 
     /**
      * 基本组件引用，用于物理移动和碰撞检测。
      */
-    [Header("基本组件")]
-    private Rigidbody2D rd;          // 2D刚体组件，用于物理模拟
-    private BoxCollider2D coll;       // 碰撞盒组件，用于碰撞检测
+    [Header("基本组件")] private Rigidbody2D rd; // 2D刚体组件，用于物理模拟
+
+    private BoxCollider2D coll; // 碰撞盒组件，用于碰撞检测
     //private InventoryUI inventoryUI; // 库存UI引用（已注释，未使用）
 
     /**
      * 新输入系统集成，支持更灵活的输入控制。
      */
-    [Header("新输入系统")]
-    private Simulation inputSystem; // 自定义输入系统实例
-    
+    [Header("新输入系统")] private Simulation inputSystem; // 自定义输入系统实例
+
 
     /**
      * 初始化组件引用和速度参数。
@@ -45,13 +46,51 @@ public class PlayerController : MonoBehaviour
         _animators = GetComponentsInChildren<Animator>();
     }
 
-    /**
-     * 启用时激活输入系统。
-     */
+
     private void OnEnable()
     {
-        inputSystem.Enable();
+        inputSystem.Enable(); // 启用输入系统
+        EventHandle.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent; // 在场景卸载前订阅事件
+        EventHandle.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent; // 在场景加载后订阅事件
+        EventHandle.MoveToPosition += OnMoveToPosition; // 订阅移动到位置的事件
     }
+
+
+    private void OnDisable()
+    {
+        inputSystem.Disable(); // 禁用输入系统
+        EventHandle.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent; // 取消订阅场景卸载前的事件
+        EventHandle.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent; // 取消订阅场景加载后的事件
+        EventHandle.MoveToPosition -= OnMoveToPosition; // 取消订阅移动到位置的事件
+    }
+
+    /**
+     * 当收到移动到指定位置的事件时调用的方法。
+     * @param targetPosition 目标位置的向量。
+     */
+    private void OnMoveToPosition(Vector3 targetPosition)
+    {
+        transform.position = targetPosition; // 将当前游戏对象的transform位置设置为目标位置
+    }
+
+    /**
+     * 当场景加载完成后调用的方法。
+     * 主要用于重置输入系统为可用状态。
+     */
+    private void OnAfterSceneLoadedEvent()
+    {
+        inputDisable = false; // 设置输入系统为可用
+    }
+
+    /**
+     * 当场景卸载前调用的方法。
+     * 主要用于禁用输入系统，避免在场景切换过程中产生错误的输入。
+     */
+    private void OnBeforeSceneUnloadEvent()
+    {
+        inputDisable = true; // 设置输入系统为禁用
+    }
+
 
     /**
      * 每帧更新，读取玩家输入的方向。
@@ -60,7 +99,6 @@ public class PlayerController : MonoBehaviour
     {
         faceDir = inputSystem.Player.Move.ReadValue<Vector2>(); // 读取移动输入
         SwitchAnimation();
-        
     }
 
     /**
@@ -68,20 +106,12 @@ public class PlayerController : MonoBehaviour
      */
     private void FixedUpdate()
     {
-        
-        if (Mathf.Abs(faceDir.x)<= 0.5f|| Mathf.Abs(faceDir.y)<= 0.5f)  // 当移动输入不全为正时（简化条件判断）
+        if (!inputDisable)
         {
             Move(); // 执行移动逻辑
         }
     }
 
-    /**
-     * 禁用时关闭输入系统。
-     */
-    private void OnDisable()
-    {
-        inputSystem.Disable();
-    }
 
     /**
      * 实现玩家的移动逻辑。
@@ -91,7 +121,7 @@ public class PlayerController : MonoBehaviour
     {
         rd.MovePosition(transform.localPosition + (Vector3)faceDir * (speed * Time.deltaTime)); // 更新角色位置
     }
-    
+
     /**
      * 切换角色动画状态的方法。
      *
@@ -116,7 +146,7 @@ public class PlayerController : MonoBehaviour
         // 如果上述所有条件都满足，则说明faceDir不是指向原点的方向向量（即有非零的水平或垂直移动分量），
         // 此时表达式的值为 true，否则为 false。
         isMove = faceDir is not { x: 0, y: 0 };
-        
+
         foreach (var animator in _animators)
         {
             animator.SetBool(Settings.IsMoving, isMove);

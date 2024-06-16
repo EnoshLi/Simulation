@@ -9,21 +9,6 @@ public static class EventHandle
     //更新背包栏的事件
     public static event Action<InventoryLocation, List<InventoryItem>> UpdateInventoryUI;
 
-    //地图上生成物品的事件
-    public static event Action<int, Vector3> InstantItemInScence;
-
-    //物品选中事件
-    public static event Action<ItemDetails, bool> ItemSelectedEvent;
-
-    //时间改变的事件
-    public static event Action<int, int> GameMinuteEvent;
-
-    //日期改变时间
-    public static event Action<int, int, int, int, Season> GameDataEvent;
-
-    //
-    public static event Action<string, Vector3> TransitionEvent;
-
     /**
      * 触发更新库存界面的事件方法。
      *
@@ -39,6 +24,10 @@ public static class EventHandle
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
         UpdateInventoryUI?.Invoke(location, itemList);
     }
+
+    //地图上生成物品的事件
+    public static event Action<int, Vector3> InstantItemInScence;
+
 
     /**
      * 即时在场景中生成指定物品的方法。
@@ -56,6 +45,10 @@ public static class EventHandle
         InstantItemInScence?.Invoke(itemID, position);
     }
 
+    //物品选中事件
+    public static event Action<ItemDetails, bool> ItemSelectedEvent;
+
+
     /**
      * 触发【物品选中状态变更】事件的方法。
      *
@@ -69,6 +62,10 @@ public static class EventHandle
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
         ItemSelectedEvent?.Invoke(itemDetails, isSelected);
     }
+
+    //时间改变的事件
+    public static event Action<int, int> GameMinuteEvent;
+
 
     /**
      * 触发【时间分钟变化】事件的方法。
@@ -84,6 +81,10 @@ public static class EventHandle
         GameMinuteEvent?.Invoke(minute, hour);
     }
 
+    //日期改变时间
+    public static event Action<int, int, int, int, Season> GameDataEvent;
+
+
     /// <summary>
     /// 调用游戏数据事件。
     /// </summary>
@@ -98,6 +99,9 @@ public static class EventHandle
         GameDataEvent?.Invoke(hour, day, month, year, season);
     }
 
+    //场景转换事件
+    public static event Action<string, Vector3> TransitionEvent;
+
     /// <summary>
     /// 调用场景过渡事件。
     /// </summary>
@@ -108,5 +112,55 @@ public static class EventHandle
     {
         // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
         TransitionEvent?.Invoke(sceneName, targetPosition);
+    }
+
+    /// <summary>
+    /// 在场景卸载前触发的事件。
+    /// </summary>
+    public static event Action BeforeSceneUnloadEvent;
+
+    /// <summary>
+    /// 触发场景卸载前的事件。
+    /// </summary>
+    /// <remarks>
+    /// 此方法用于安全地触发<see cref="BeforeSceneUnloadEvent"/>事件。如果没有任何订阅者，
+    /// 则不会发生任何事情。使用null条件运算符(?.)可以避免在事件没有订阅者时引发空指针异常。
+    /// </remarks>
+    public static void CallBeforeSceneUnloadEvent()
+    {
+        // 使用null条件运算符安全地调用事件，避免在无订阅者时产生空指针异常
+        BeforeSceneUnloadEvent?.Invoke();
+    }
+
+    /// <summary>
+    /// 定义一个静态事件，用于在场景加载后触发回调。
+    /// </summary>
+    public static event Action AfterSceneLoadedEvent;
+
+    /// <summary>
+    /// 触发场景加载后的事件。
+    /// </summary>
+    /// <remarks>
+    /// 此方法用于调用注册到AfterSceneLoadedEvent事件的所有回调函数。
+    /// 它的存在是为了在场景加载完成后通知监听此事件的任何部分 of the application。
+    /// </remarks>
+    public static void CallAfterSceneLoadedEvent()
+    {
+        AfterSceneLoadedEvent?.Invoke();
+    }
+
+    /// <summary>
+    /// 定义一个静态事件，用于触发人物移动到特定位置的操作。
+    /// </summary>
+    public static event Action<Vector3> MoveToPosition;
+
+    /// <summary>
+    /// 触发移动到指定位置的事件。
+    /// </summary>
+    /// <param name="position">目标位置的三维向量坐标。</param>
+    public static  void CallMoveToPosition(Vector3 position)
+    {
+        // 使用条件运算符和Invoke方法安全地触发事件，避免如果事件为空时出现的null引用异常。
+        MoveToPosition?.Invoke(position);
     }
 }

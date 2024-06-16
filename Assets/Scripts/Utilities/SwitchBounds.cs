@@ -6,11 +6,17 @@ using UnityEngine;
 
 public class SwitchBounds : MonoBehaviour
 {
-    //TODO: 后期会改变方法位置
-    private void Start()
+    
+    private void OnEnable()
     {
-        SwitchConfinerShape();
+        EventHandle.AfterSceneLoadedEvent += SwitchConfinerShape;
     }
+
+    private void OnDisable()
+    {
+        EventHandle.AfterSceneLoadedEvent -= SwitchConfinerShape;
+    }
+
     /**
      * 切换限制器形状的私有方法。
      *

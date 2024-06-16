@@ -36,6 +36,8 @@ namespace Keraz.Inventory
             EventHandle.UpdateInventoryUI += OnUpdateInventoryUI;
             // 启用输入系统
             inputSystem.Enable();
+            
+            EventHandle.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         }
 
         private void OnDisable()
@@ -44,7 +46,9 @@ namespace Keraz.Inventory
             EventHandle.UpdateInventoryUI -= OnUpdateInventoryUI;
             // 禁用输入系统
             inputSystem.Disable();
+            EventHandle.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         }
+        
 
         private void Awake()
         {
@@ -139,6 +143,15 @@ namespace Keraz.Inventory
                     slot.slotHightlight.gameObject.SetActive(false); // 关闭高亮
                 }
             }
+        }
+        
+        /// <summary>
+        /// 在场景卸载前触发的事件处理程序。
+        /// </summary>
+        private void OnBeforeSceneUnloadEvent()
+        {
+            // 取消槽位的高亮显示
+            UpdateSlotHighlight(-1);
         }
     }
 }

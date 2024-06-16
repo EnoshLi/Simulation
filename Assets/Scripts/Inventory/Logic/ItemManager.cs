@@ -21,6 +21,7 @@ namespace Keraz.Inventory
         private void OnEnable()
         {
             EventHandle.InstantItemInScence += OnInstantItemInScence;
+            EventHandle.AfterSceneLoadedEvent+=OnAfterSceneLoaded;
         }
 
         /**
@@ -29,12 +30,16 @@ namespace Keraz.Inventory
         private void OnDisable()
         {
             EventHandle.InstantItemInScence -= OnInstantItemInScence;
+            EventHandle.AfterSceneLoadedEvent -= OnAfterSceneLoaded;
         }
 
+        
         /**
-         * Unity组件启动时调用，用于初始化物品父级变换对象。
+         * 场景加载后调用的私有方法。
+         * 该方法的目的是在场景加载后，找到并存储标签为"ItemParent"的游戏对象的变换组件。
+         * 这样做的目的是为了后续操作这个父对象及其子对象提供便利。
          */
-        private void Start()
+        private void OnAfterSceneLoaded()
         {
             // 通过标签查找场景中的"ItemParent"对象并获取其变换组件
             itemParent = GameObject.FindWithTag("ItemParent").transform;

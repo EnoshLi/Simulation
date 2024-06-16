@@ -31,10 +31,31 @@ namespace Keraz.Transition
         }
 
 
+        /**
+         * 异步加载新场景并卸载当前场景的协程。
+         * 此协程用于处理场景之间的过渡，通过首先触发卸载前的事件，
+         * 然后卸载当前场景，再加载新场景，并最后触发加载后的事件来实现。
+         * 这种设计允许游戏在场景过渡时进行必要的逻辑处理，比如资源释放和加载。
+         *
+         * @param sceneName 新场景的名称，用于加载新场景。
+         * @param targetPosition 新场景中物体的目标位置，用于加载后物体的定位。
+         */
         private IEnumerator Translation(string sceneName, Vector3 targetPosition)
         {
+            // 触发场景卸载前的事件，允许进行任何必要的准备工作。
+            EventHandle.CallBeforeSceneUnloadEvent();
+            
+            // 卸载当前场景，异步操作并等待完成。
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-            yield return SceneManager.LoadSceneAsync(sceneName,LoadSceneMode.Additive);
+            
+            // 加载新场景
+            yield return LoadSceneSetActive(sceneName);
+            
+            //人物移动到新场景的坐标
+            EventHandle.CallMoveToPosition(targetPosition);
+            
+            // 触发场景卸载后的事件，此时场景已经卸载完成。
+            EventHandle.CallAfterSceneLoadedEvent();
         }
 
         /**

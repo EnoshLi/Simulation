@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class AnimatorOverride : MonoBehaviour
 {
-    private Animator[] animators;//存储人物的动画组件
+    private Animator[] animators; //存储人物的动画组件
     public SpriteRenderer holdItem; //人物搬运物品的图片
-    public List<AnimatorType> animatorTypes;//人物的动画类型
-    private Dictionary<string, Animator> animatorNameDict = new();//存储不同的动画名称和动画组件
+    public List<AnimatorType> animatorTypes; //人物的动画类型
+    private Dictionary<string, Animator> animatorNameDict = new(); //存储不同的动画名称和动画组件
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class AnimatorOverride : MonoBehaviour
         //获取人物上的动画组件
         foreach (var animator in animators)
         {
-            animatorNameDict.Add(animator.name,animator);
+            animatorNameDict.Add(animator.name, animator);
             //print(animator.name);
         }
     }
@@ -25,13 +25,34 @@ public class AnimatorOverride : MonoBehaviour
     {
         // 监听物品选择事件，注册事件处理器
         EventHandle.ItemSelectedEvent += OnItemSelectedEvent;
+        EventHandle.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
     }
-    
+
     private void OnDisable()
     {
         // 监听物品选择事件，清理事件处理器
         EventHandle.ItemSelectedEvent -= OnItemSelectedEvent;
+        //场景卸载前的触发事件
+        EventHandle.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
     }
+
+    /// <summary>
+    /// 在场景卸载前调用的事件处理程序。
+    /// </summary>
+    /// <remarks>
+    /// 此方法的目的是在场景切换前对游戏对象的状态进行调整，确保场景切换过程中的平滑过渡。
+    /// 它通过禁用holdItem对象和切换动画状态来实现这一点。
+    /// </remarks>
+    private void OnBeforeSceneUnloadEvent()
+    {
+        // 禁用holdItem游戏对象，以防止在场景切换过程中出现不期望的行为。
+        holdItem.enabled = false;
+
+        // 切换动画控制器的状态到None，为场景切换做准备。
+        /// <param name="partType">表示要切换到的动画部分类型。</param>
+        SwitchAnimator(PartType.None);
+    }
+    
     /// <summary>
     /// 当`ItemSelectedEvent`事件被触发时，此私有方法会被调用，以响应物品选中人物的动画变化。
     /// </summary>
@@ -49,25 +70,27 @@ public class AnimatorOverride : MonoBehaviour
         if (!selected)
         {
             currentType = PartType.None;
-            holdItem.enabled=false;
+            holdItem.enabled = false;
         }
         else
-        {   //人物搬运状态
-            if (currentType==PartType.Carry)
+        {
+            //人物搬运状态
+            if (currentType == PartType.Carry)
             {
                 // 当选中且存在世界空间图标时，使用世界空间图标，当选中但不存在世界空间图标时，使用常规图标
-                holdItem.sprite = itemDetails.itemOnWorldSprite != null ? 
-                    itemDetails.itemOnWorldSprite : itemDetails.itemIcon;
-                holdItem.enabled=true;
+                holdItem.sprite = itemDetails.itemOnWorldSprite != null
+                    ? itemDetails.itemOnWorldSprite
+                    : itemDetails.itemIcon;
+                holdItem.enabled = true;
             }
         }
 
         // 当选中且存在世界空间图标时，使用世界空间图标，当选中但不存在世界空间图标时，使用常规图标
-        holdItem.sprite = itemDetails.itemOnWorldSprite != null ? 
-            itemDetails.itemOnWorldSprite : itemDetails.itemIcon;
+        holdItem.sprite = itemDetails.itemOnWorldSprite != null ? itemDetails.itemOnWorldSprite : itemDetails.itemIcon;
         //切换人物动画
         SwitchAnimator(currentType);
     }
+
     /// <summary>
     /// 人物动画切换
     /// </summary>
