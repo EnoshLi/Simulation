@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Settings
 {
-    #region 渐入渐出
+    #region 物体渐入渐出
     
         //物体渐变透明的时间
-        public const float FadeIn = 1f;
+        public const float itemFadeIn = 1f;
         
         //物体渐变透明度
-        public const float TargetAlpha = 0.3f;
+        public const float itemTargetAlpha = 0.3f;
     
     #endregion
 
@@ -51,6 +51,14 @@ public class Settings
         // 定义季节的持续最大值，用于特定周期的计时或循环逻辑
         public const int seasonHold = 3;
         
+    #endregion
+
+    #region 场景切换的渐入渐出
+
+    public const float fadeDuration = 1.5f;
+    
+
+
     #endregion
 
 }

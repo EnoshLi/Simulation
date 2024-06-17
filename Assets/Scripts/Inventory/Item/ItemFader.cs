@@ -27,7 +27,7 @@ public class ItemFader : MonoBehaviour
     public void FadeIn()
     {
         Color targetColor = new Color(1, 1, 1, 1); // 目标颜色为白色且完全不透明
-        spriteRenderer.DOColor(targetColor, Settings.FadeIn); // 平滑过渡到目标颜色，持续时间由Settings.fadeIn定义
+        spriteRenderer.DOColor(targetColor, Settings.itemFadeIn); // 平滑过渡到目标颜色，持续时间由Settings.fadeIn定义
     }
 
     /**
@@ -37,7 +37,7 @@ public class ItemFader : MonoBehaviour
      */
     public void FadeOut()
     {
-        Color targetColor = new Color(1, 1, 1, Settings.TargetAlpha); // 目标颜色的alpha通道由Settings.targetAlpha决定
-        spriteRenderer.DOColor(targetColor, Settings.FadeIn); // 平滑过渡到具有指定透明度的目标颜色，持续时间同样由Settings.fadeIn定义
+        Color targetColor = new Color(1, 1, 1, Settings.itemTargetAlpha); // 目标颜色的alpha通道由Settings.targetAlpha决定
+        spriteRenderer.DOColor(targetColor, Settings.itemFadeIn); // 平滑过渡到具有指定透明度的目标颜色，持续时间同样由Settings.fadeIn定义
     }
 }

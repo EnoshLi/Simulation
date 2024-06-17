@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Attribute;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,11 +9,16 @@ namespace Keraz.Transition
 {
     public class TranslationManager : MonoBehaviour
     {
+        [SceneName]
         public string startSceneName = string.Empty;
+
+        private CanvasGroup fadeCanvasGroup;
+        private bool isFade;
 
         private void Start()
         {
             StartCoroutine(LoadSceneSetActive(startSceneName));
+            fadeCanvasGroup = FindObjectOfType<CanvasGroup>();
         }
 
         private void OnEnable()
@@ -27,7 +33,8 @@ namespace Keraz.Transition
 
         private void OnTransitionEvent(string sceneNameToGo, Vector3 positionToGo)
         {
-            StartCoroutine(Translation(sceneNameToGo, positionToGo));
+            if(!isFade)
+                StartCoroutine(Translation(sceneNameToGo, positionToGo));
         }
 
 
@@ -44,12 +51,13 @@ namespace Keraz.Transition
         {
             // 触发场景卸载前的事件，允许进行任何必要的准备工作。
             EventHandle.CallBeforeSceneUnloadEvent();
-            
+            yield return Fade(1);
             // 卸载当前场景，异步操作并等待完成。
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             
             // 加载新场景
             yield return LoadSceneSetActive(sceneName);
+            yield return  Fade(0);
             
             //人物移动到新场景的坐标
             EventHandle.CallMoveToPosition(targetPosition);
@@ -75,6 +83,25 @@ namespace Keraz.Transition
 
             // 将新加载的场景设置为活跃场景。
             SceneManager.SetActiveScene(newScene);
+        }
+        /// <summary>
+        /// 场景切换淡入淡出
+        /// </summary>
+        /// <param name="targetAlpha">1黑，0透明</param>
+        /// <returns></returns>
+        private IEnumerator Fade(float targetAlpha)
+        {
+            isFade = true;
+            fadeCanvasGroup.blocksRaycasts = true;
+            float speed = Mathf.Abs(fadeCanvasGroup.alpha - targetAlpha)/Settings.fadeDuration;
+            while (Mathf.Approximately(fadeCanvasGroup.alpha,targetAlpha))
+            {
+                fadeCanvasGroup.alpha=Mathf.MoveTowards(fadeCanvasGroup.alpha,targetAlpha,speed*Time.deltaTime);
+                yield return null;
+            }
+
+            fadeCanvasGroup.blocksRaycasts = false;
+            isFade = false;
         }
     }
 }
