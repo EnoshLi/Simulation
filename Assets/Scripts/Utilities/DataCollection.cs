@@ -104,4 +104,32 @@ public class AnimatorType
     // 实例化该类的对象时，可以通过此字段自定义部件的动画行为，而不改变原有动画控制器的基本配置。
     public AnimatorOverrideController animatorOverride;
 }
+[System.Serializable]
+public class SerializeVector3
+{
+    public float x, y, z;
+    public  SerializeVector3(Vector3 pos)
+    {
+        x = pos.x;
+        y = pos.y;
+        z = pos.z;
+    }
+    public Vector3 ToVector3()
+    {
+        return new Vector3(x, y, z);
+    }
+
+    public Vector2Int ToVector2Int()
+    {
+        return new Vector2Int((int)x, (int)y);
+    }
+}
+
+[System.Serializable]
+public class SceneItem
+{
+    public int itemID;
+    public SerializeVector3 position;
+}
+
 

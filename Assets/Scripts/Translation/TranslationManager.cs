@@ -57,13 +57,14 @@ namespace Keraz.Transition
             
             // 加载新场景
             yield return LoadSceneSetActive(sceneName);
-            yield return  Fade(0);
             
             //人物移动到新场景的坐标
             EventHandle.CallMoveToPosition(targetPosition);
             
             // 触发场景卸载后的事件，此时场景已经卸载完成。
             EventHandle.CallAfterSceneLoadedEvent();
+            yield return  Fade(0);
+
         }
 
         /**
@@ -94,7 +95,7 @@ namespace Keraz.Transition
             isFade = true;
             fadeCanvasGroup.blocksRaycasts = true;
             float speed = Mathf.Abs(fadeCanvasGroup.alpha - targetAlpha)/Settings.fadeDuration;
-            while (Mathf.Approximately(fadeCanvasGroup.alpha,targetAlpha))
+            while (!Mathf.Approximately(fadeCanvasGroup.alpha,targetAlpha))
             {
                 fadeCanvasGroup.alpha=Mathf.MoveTowards(fadeCanvasGroup.alpha,targetAlpha,speed*Time.deltaTime);
                 yield return null;

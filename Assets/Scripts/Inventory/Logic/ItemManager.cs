@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // 命名空间声明，用于组织与库存物品管理相关的类和方法
 namespace Keraz.Inventory
@@ -14,6 +17,9 @@ namespace Keraz.Inventory
 
         // 私有字段，保存物品实例化的父级变换对象
         private Transform itemParent;
+        
+        //记录场景Item
+        private Dictionary<string,List<SceneItem>> sceneItemsDic = new Dictionary<string, List<SceneItem>>();
 
         /**
          * 当此组件启用时，注册事件监听以便在场景中即时生成物品。
@@ -21,8 +27,10 @@ namespace Keraz.Inventory
         private void OnEnable()
         {
             EventHandle.InstantItemInScence += OnInstantItemInScence;
+            EventHandle.BeforeSceneUnloadEvent+=OnBeforeSceneUnload;
             EventHandle.AfterSceneLoadedEvent+=OnAfterSceneLoaded;
         }
+        
 
         /**
          * 当此组件禁用时，注销事件监听。
@@ -30,7 +38,12 @@ namespace Keraz.Inventory
         private void OnDisable()
         {
             EventHandle.InstantItemInScence -= OnInstantItemInScence;
+            EventHandle.BeforeSceneUnloadEvent -= OnBeforeSceneUnload;
             EventHandle.AfterSceneLoadedEvent -= OnAfterSceneLoaded;
+        }
+        private void OnBeforeSceneUnload()
+        {
+            GetAllSceneItem();
         }
 
         
@@ -43,6 +56,7 @@ namespace Keraz.Inventory
         {
             // 通过标签查找场景中的"ItemParent"对象并获取其变换组件
             itemParent = GameObject.FindWithTag("ItemParent").transform;
+            RecreateSceneItem();
         }
 
         /**
@@ -57,6 +71,55 @@ namespace Keraz.Inventory
             var newItem = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
             // 设置新实例化物品的ID
             newItem.itemID = ID;
+        }
+        /// <summary>
+        /// 获取当前场景所有物品
+        /// </summary>
+        private void GetAllSceneItem()
+        {
+            List<SceneItem> currentSceneItems = new List<SceneItem>();
+            foreach (var item in FindObjectsOfType<Item>())
+            {
+                SceneItem sceneItem = new SceneItem
+                {
+                    itemID =  item.itemID,
+                    position = new SerializeVector3(item.transform.position) 
+                };
+                currentSceneItems.Add(sceneItem);
+            }
+
+            if (sceneItemsDic.ContainsKey(SceneManager.GetActiveScene().name))
+            {
+                sceneItemsDic[SceneManager.GetActiveScene().name] = currentSceneItems;
+            }
+            else
+            {
+                sceneItemsDic.Add(SceneManager.GetActiveScene().name, currentSceneItems);
+            }
+        }
+        /// <summary>
+        /// 刷新当前场景物品
+        /// </summary>
+        private void RecreateSceneItem()
+        {
+            List<SceneItem> currentSceneItems = new();
+            if (sceneItemsDic.TryGetValue(SceneManager.GetActiveScene().name, out currentSceneItems))
+            {
+                if (currentSceneItems!=null)
+                {
+                    //清场
+                    foreach (var item in FindObjectsOfType<Item>())
+                    {
+                        Destroy(item.gameObject);
+                    }
+
+                    foreach (var item in currentSceneItems)
+                    {
+                        Item newItem = Instantiate(itemPrefab, item.position.ToVector3(), quaternion.identity);
+                        newItem.Init(item.itemID);
+                    }
+                }
+            }
         }
     }
 }
